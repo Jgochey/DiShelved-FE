@@ -44,23 +44,15 @@ function LocationsPage() {
             Add New Location
           </Button>
         </Link>
-
-        {/* <Link href="/" passHref>
-          <Button variant="primary" className="m-2" style={{ background: '#dda15e', borderColor: '#dda15e', color: '#ffffff' }}>
-            Return to Forecast
-          </Button>
-        </Link>
-      </div> */}
       </div>
 
       <div className="savedLocationsContainer">
         {Object.values(locations).map((location) => (
           <Card className="savedlocationcard" key={location.id} style={{ background: '#606c38' }}>
-            <h3 style={{ color: '#ffffff' }}>
-              {location.name} {location.description}
-            </h3>
+            <h1 style={{ color: '#ffffff' }}>{location.name}</h1>
+            <h4 style={{ color: '#ffffff' }}> {location.description} </h4>
 
-            <Link href={`/NewLocation/${user.uid}/edit/${location.id}`} passHref>
+            <Link href={`/NewLocation/edit/${user.uid}/${location.id}`} passHref>
               <Button variant="info" style={{ background: '#ffffff', borderColor: '#ffffff', color: '#1a1a1a', width: '100%' }}>
                 {' '}
                 Edit{' '}

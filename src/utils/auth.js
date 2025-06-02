@@ -10,8 +10,6 @@ const signIn = async () => {
     const token = await user.getIdToken();
     // Automatically register user in your backend
     await createUser({ uid: user.uid }, token);
-    console.log('User signed in:', user);
-    console.log('Result:', result);
   }
 };
 
