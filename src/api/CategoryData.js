@@ -13,12 +13,12 @@ const getToken = async () => {
   return null;
 };
 
-const getLocationsByUserUid = (Uid) =>
+const getCategoriesByUserId = (userId) =>
   new Promise((resolve, reject) => {
     (async () => {
       try {
         const token = await getToken();
-        const response = await fetch(`${endpoint}/Locations/UserUid/${Uid}`, {
+        const response = await fetch(`${endpoint}/Categories/User/${userId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -33,12 +33,32 @@ const getLocationsByUserUid = (Uid) =>
     })();
   });
 
-const getLocationById = (locationId) =>
+const getCatergoriesByUserUid = (Uid) =>
   new Promise((resolve, reject) => {
     (async () => {
       try {
         const token = await getToken();
-        const response = await fetch(`${endpoint}/Locations/${locationId}`, {
+        const response = await fetch(`${endpoint}/Categories/UserUid/${Uid}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        resolve(data || []);
+      } catch (error) {
+        reject(error);
+      }
+    })();
+  });
+
+const getCategoryById = (categoryId) =>
+  new Promise((resolve, reject) => {
+    (async () => {
+      try {
+        const token = await getToken();
+        const response = await fetch(`${endpoint}/Categories/${categoryId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -53,38 +73,36 @@ const getLocationById = (locationId) =>
     })();
   });
 
-const updateLocation = (locationId, locationData) =>
+const updateCategory = (categoryId, categoryData) =>
   new Promise((resolve, reject) => {
     (async () => {
       try {
         const token = await getToken();
-        const response = await fetch(`${endpoint}/Locations/${locationId}`, {
+        const response = await fetch(`${endpoint}/Categories/${categoryId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(locationData),
+          body: JSON.stringify(categoryData),
         });
-        if (!response.ok) {
-          const errorText = await response.text();
-          reject(new Error(errorText));
-          return;
+        if (response.ok) {
+          resolve();
+        } else {
+          reject(new Error('Failed to update category'));
         }
-        const data = await response.json();
-        resolve(data || null);
       } catch (error) {
         reject(error);
       }
     })();
   });
 
-const deleteLocation = (locationId) =>
+const deleteCategory = (categoryId) =>
   new Promise((resolve, reject) => {
     (async () => {
       try {
         const token = await getToken();
-        const response = await fetch(`${endpoint}/Locations/${locationId}`, {
+        const response = await fetch(`${endpoint}/Categories/${categoryId}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -94,7 +112,7 @@ const deleteLocation = (locationId) =>
         if (!response.ok) {
           // Try to parse the error message from the response
           const errorData = await response.json().catch(() => ({}));
-          reject(new Error(errorData.message || 'Failed to delete location'));
+          reject(new Error(errorData.message || 'Failed to delete category'));
           return;
         }
         resolve();
@@ -104,18 +122,18 @@ const deleteLocation = (locationId) =>
     })();
   });
 
-const createLocation = (locationData) =>
+const createCategory = (categoryData) =>
   new Promise((resolve, reject) => {
     (async () => {
       try {
         const token = await getToken();
-        const response = await fetch(`${endpoint}/Locations`, {
+        const response = await fetch(`${endpoint}/Categories`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(locationData),
+          body: JSON.stringify(categoryData),
         });
         const data = await response.json();
         resolve(data || null);
@@ -125,4 +143,4 @@ const createLocation = (locationData) =>
     })();
   });
 
-export { getLocationsByUserUid, getLocationById, updateLocation, deleteLocation, createLocation };
+export { getCategoriesByUserId, getCatergoriesByUserUid, getCategoryById, updateCategory, deleteCategory, createCategory };

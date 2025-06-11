@@ -32,7 +32,11 @@ function LocationsPage() {
 
   const deleteSavedLocation = (location) => {
     if (window.confirm(`Delete ${location.name}?`)) {
-      deleteLocation(location.id).then(() => setUserLocations());
+      deleteLocation(location.id)
+        .then(() => setUserLocations())
+        .catch((error) => {
+          alert(error.message || 'Failed to delete location');
+        });
     }
   };
 
@@ -48,7 +52,7 @@ function LocationsPage() {
 
       <div className="savedLocationsContainer">
         {Object.values(locations).map((location) => (
-          <Card className="savedlocationcard" key={location.id} style={{ background: '#606c38' }}>
+          <Card className="savedlocationcard" key={location.id} style={{ background: '#305bab' }}>
             <h1 style={{ color: '#ffffff' }}>{location.name}</h1>
             <h4 style={{ color: '#ffffff' }}> {location.description} </h4>
 
@@ -63,6 +67,10 @@ function LocationsPage() {
               {' '}
               Delete{' '}
             </Button>
+
+            <Link href={`/Containers/${user.uid}/${location.id}`} passHref>
+              <Button variant="success"> View/Add Containers </Button>
+            </Link>
           </Card>
         ))}
       </div>
