@@ -9,6 +9,7 @@ import { deleteItem, getItemsByContainerId } from '@/api/ItemData';
 import ModalForCategory from '@/components/CategoryModal';
 import { createItemCategory, getItemCategoriesByItemId, deleteItemCategory } from '@/api/ItemCategoryData'; // You need to implement this
 import { getCatergoriesByUserUid } from '../../../../api/CategoryData';
+import { getContainerById } from '../../../../api/ContainerData';
 
 function ItemsPage() {
   const { user } = useAuth();
@@ -17,7 +18,8 @@ function ItemsPage() {
   const { containerId } = params; // <-- Destructure params
   const [Items, setItems] = useState([]);
   const [Categories, setCategories] = useState([]);
-  const [ItemCategories, setItemCategories] = useState([]); // This will hold the ItemCategory data
+  const [ItemCategories, setItemCategories] = useState([]);
+  const [container, setContainer] = useState({});
 
   const setUserItems = () => {
     if (user && user.uid && containerId) {
@@ -61,6 +63,12 @@ function ItemsPage() {
     setUserItemCategories();
   }, [Items]);
 
+  useEffect(() => {
+    if (containerId) {
+      getContainerById(containerId).then(setContainer);
+    }
+  }, [containerId]);
+
   const deleteSavedItem = async (Item) => {
     if (window.confirm(`Delete ${Item.name}?`)) {
       // Find all ItemCategory relationships for this item
@@ -76,84 +84,92 @@ function ItemsPage() {
   };
 
   return (
-    <div className="text-center d-flex flex-column justify-content-center align-content-center newForecastOptions">
-      <Link href={`/NewItem/${containerId}/new`} passHref>
-        <Button variant="danger" type="button" size="lg" className="copy-btn" style={{ background: '#ffffff', borderColor: '#ffffff', color: '#1a1a1a' }}>
-          Add New Item
-        </Button>
-      </Link>
+    <>
+      <Card className="mb-3" style={{ background: '#305bab', color: '#ffffff' }}>
+        <div className="header">{containerId.name}</div>
+        <div className="header">{container ? container.name : 'Loading...'}</div>
+        <div className="headerDescription">{container ? container.description : ''}</div>
+      </Card>
 
-      {/* This should only be displayed if the user has saved Items. If not, only show the "Add New Item" button. */}
-      {Items.length > 0 && (
-        <div className="savedItemsItem">
-          {Object.values(Items).map((Item) => {
-            const itemCategoryIds = ItemCategories.filter((ic) => ic.itemId === Item.id).map((ic) => ic.categoryId);
+      <div className="text-center d-flex flex-column justify-content-center align-content-center">
+        <Link href={`/NewItem/${containerId}/new`} passHref>
+          <Button variant="danger" type="button" size="lg" className="copy-btn" style={{ background: '#ffffff', borderColor: '#ffffff', color: '#1a1a1a' }}>
+            Add New Item
+          </Button>
+        </Link>
 
-            const itemCategories = Categories.filter((cat) => itemCategoryIds.includes(cat.id));
+        {/* This should only be displayed if the user has saved Items. If not, only show the "Add New Item" button. */}
+        {Items.length > 0 && (
+          <div className="savedItemsItem">
+            {Object.values(Items).map((Item) => {
+              const itemCategoryIds = ItemCategories.filter((ic) => ic.itemId === Item.id).map((ic) => ic.categoryId);
 
-            return (
-              <Card className="savedItemcard" key={Item.id} style={{ background: '#305bab' }}>
-                <h1 style={{ color: '#ffffff' }}>{Item.name}</h1>
-                <h4 style={{ color: '#ffffff' }}> {Item.description} </h4>
-                <h4 style={{ color: '#ffffff' }}> Quantity: {Item.quantity} </h4>
-                <h4 style={{ color: '#ffffff' }}> {Item.complete ? '✔️ This item is complete' : '❌ This item is missing pieces'} </h4>
-                <div className="d-flex justify-content-between">
-                  {' '}
-                  <img src={Item.image} alt={Item.name} style={{ width: '100px', height: '100px' }} />
-                  {/*  What should happen is that the Item's Categories should be fetched using the newly created ItemCategory to find the corresponding category and display it in the UI. */}
-                  <h4 style={{ color: '#ffffff' }}> Categories: </h4>
-                  <div>
-                    {itemCategories.length > 0 ? (
-                      itemCategories.map((category) => (
-                        <span key={category.id} style={{ color: '#ffffff', marginRight: '10px' }}>
-                          {category.name}
-                        </span>
-                      ))
-                    ) : (
-                      <span style={{ color: '#ffffff' }}>No categories assigned</span>
-                    )}
-                  </div>
-                  <div>
-                    <ModalForCategory
-                      categories={Categories}
-                      selectedCategoryIds={itemCategoryIds}
-                      onCategoryAdd={async (categoryId) => {
-                        await createItemCategory(Item.id, categoryId);
-                        setUserItemCategories(); // Refresh item-category associations
-                      }}
-                      onCategoryRemove={async (categoryId) => {
-                        await deleteItemCategory(Item.id, categoryId); // <-- You need this API function
-                        setUserItemCategories();
-                      }}
-                    />
-                  </div>
-                </div>
+              const itemCategories = Categories.filter((cat) => itemCategoryIds.includes(cat.id));
 
-                <Link href={`/NewItem/${containerId}/edit/${user.uid}/${Item.id}`} passHref>
-                  <Button variant="info" style={{ background: '#ffffff', borderColor: '#ffffff', color: '#1a1a1a', width: '100%' }}>
+              return (
+                <Card className="savedItemcard" key={Item.id} style={{ background: '#305bab' }}>
+                  <h1 style={{ color: '#ffffff' }}>{Item.name}</h1>
+                  <h4 style={{ color: '#ffffff' }}> {Item.description} </h4>
+                  <h4 style={{ color: '#ffffff' }}> Quantity: {Item.quantity} </h4>
+                  <h4 style={{ color: '#ffffff' }}> {Item.complete ? '✔️ This item is complete' : '❌ This item is missing pieces'} </h4>
+                  <div className="d-flex justify-content-between">
                     {' '}
-                    Edit{' '}
+                    <img src={Item.image} alt={Item.name} style={{ width: '100px', height: '100px' }} />
+                    {/*  What should happen is that the Item's Categories should be fetched using the newly created ItemCategory to find the corresponding category and display it in the UI. */}
+                    <h4 style={{ color: '#ffffff' }}> Categories: </h4>
+                    <div>
+                      {itemCategories.length > 0 ? (
+                        itemCategories.map((category) => (
+                          <span key={category.id} style={{ color: '#ffffff', marginRight: '10px' }}>
+                            {category.name}
+                          </span>
+                        ))
+                      ) : (
+                        <span style={{ color: '#ffffff' }}>No categories assigned</span>
+                      )}
+                    </div>
+                    <div>
+                      <ModalForCategory
+                        categories={Categories}
+                        selectedCategoryIds={itemCategoryIds}
+                        onCategoryAdd={async (categoryId) => {
+                          await createItemCategory(Item.id, categoryId);
+                          setUserItemCategories(); // Refresh item-category associations
+                        }}
+                        onCategoryRemove={async (categoryId) => {
+                          await deleteItemCategory(Item.id, categoryId); // <-- You need this API function
+                          setUserItemCategories();
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <Link href={`/NewItem/${containerId}/edit/${user.uid}/${Item.id}`} passHref>
+                    <Button variant="info" style={{ background: '#ffffff', borderColor: '#ffffff', color: '#1a1a1a', width: '100%' }}>
+                      {' '}
+                      Edit{' '}
+                    </Button>
+                  </Link>
+
+                  <Button variant="danger" onClick={() => deleteSavedItem(Item)}>
+                    {' '}
+                    Delete{' '}
                   </Button>
-                </Link>
 
-                <Button variant="danger" onClick={() => deleteSavedItem(Item)}>
-                  {' '}
-                  Delete{' '}
-                </Button>
-
-                {/* Note the link here for later */}
-                {/* <Link href={`/Categories/${user.uid}/${Item.id}`} passHref>
-                <Button variant='primary'>
-                  {' '}
-                  View/Add Categories{' '}
-                </Button>
-              </Link> */}
-              </Card>
-            );
-          })}
-        </div>
-      )}
-    </div>
+                  {/* Note the link here for later */}
+                  {/* <Link href={`/Categories/${user.uid}/${Item.id}`} passHref>
+                        <Button variant='primary'>
+                          {' '}
+                          View/Add Categories{' '}
+                        </Button>
+                      </Link> */}
+                </Card>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 

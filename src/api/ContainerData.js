@@ -33,19 +33,29 @@ const getContainerById = (containerId) =>
     })();
   });
 
-const getContainersByUserUid = (Uid) =>
+const getContainersByUserId = (userId) =>
   new Promise((resolve, reject) => {
     (async () => {
       try {
         const token = await getToken();
-        const response = await fetch(`${endpoint}/Containers/UserUid/${Uid}`, {
+        const response = await fetch(`${endpoint}/Containers/User/${userId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         });
+        if (!response.ok) {
+          // If not found or error, resolve with empty array
+          resolve([]);
+          return;
+        }
         const data = await response.json();
+        // If there are no containers in the response, return an empty array
+        if (!data || Object.keys(data).length === 0) {
+          resolve([]);
+          return;
+        }
         resolve(data || []);
       } catch (error) {
         reject(error);
@@ -151,4 +161,4 @@ const createContainer = (containerData) =>
     })();
   });
 
-export { getContainerById, getContainersByUserUid, getContainersByLocationId, updateContainer, deleteContainer, createContainer };
+export { getContainerById, getContainersByUserId, getContainersByLocationId, updateContainer, deleteContainer, createContainer };
