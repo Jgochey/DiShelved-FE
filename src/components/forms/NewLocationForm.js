@@ -81,7 +81,7 @@ function NewLocationForm({ location = null }) {
       </FloatingLabel>
 
       {/* SUBMIT BUTTON  */}
-      <Button type="submit" style={{ background: '#bc6c25', borderColor: '#bc6c25' }}>
+      <Button type="submit" variant="success" className="mt-3">
         {location ? 'Update' : 'Save'} Location
       </Button>
     </Form>

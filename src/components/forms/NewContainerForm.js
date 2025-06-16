@@ -99,7 +99,7 @@ function NewContainerForm({ locationId = null, Container = null }) {
       </FloatingLabel>
 
       {/* SUBMIT BUTTON  */}
-      <Button type="submit" style={{ background: '#bc6c25', borderColor: '#bc6c25' }}>
+      <Button type="submit" variant="success" className="mt-3">
         {Container ? 'Update' : 'Save'} Container
       </Button>
     </Form>

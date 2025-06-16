@@ -59,16 +59,18 @@ function CategoriesPage() {
 
   return (
     <>
-      <>
-        <div>Categories Page</div>
-        <p>Here you can manage your categories. Create or Delete Categories for your Categorys below. </p>
-      </>
-
-      {/* // By adding Categories to your Categorys, you can organize them into groups and find them more easily when searching. */}
+      <Card className="text-center justify-content-center align-items-center" style={{ background: '#305bab', marginBottom: '1rem', maxWidth: '50%', border: '2px solid black', justifyContent: 'center', alignItems: 'center', margin: '0 auto', marginTop: '1rem' }}>
+        <h1 className="text-center" style={{ color: '#ffffff', marginTop: '1rem' }}>
+          Create/Delete Categories for your Items.
+        </h1>
+        <h4 className="text-center" style={{ color: '#ffffff', marginBottom: '1rem' }}>
+          You can enter a Category into the search bar to find all Items in that Category.
+        </h4>
+      </Card>
 
       <div className="text-center d-flex flex-column justify-content-center align-content-center newForecastOptions">
         <Link href={`/Categories/${user.uid}/new`} passHref>
-          <Button variant="danger" type="button" size="lg" className="copy-btn" style={{ background: '#ffffff', borderColor: '#ffffff', color: '#1a1a1a' }}>
+          <Button variant="danger" type="button" size="lg" className="copy-btn" style={{ background: '#ffffff', borderColor: '#ffffff', color: '#1a1a1a', marginTop: '1rem' }}>
             Add New Category
           </Button>
         </Link>
@@ -76,22 +78,29 @@ function CategoriesPage() {
 
       {/* This should only be displayed if the user has saved Categories. If not, only show the "Add New Category" button. */}
       {Categories.length > 0 && (
-        <div className="savedCategoriesCategory">
+        <div className="savedLocationsContainer">
           {Object.values(Categories).map((Category) => (
-            <Card className="savedCategorycard" key={Category.id} style={{ background: '#305bab' }}>
+            <Card className="savedlocationcard" key={Category.id} style={{ background: '#305bab' }}>
               <h1 style={{ color: '#ffffff' }}>{Category.name}</h1>
               <h4 style={{ color: '#ffffff' }}> {Category.description} </h4>
 
               <Link href={`/Categories/${user.uid}/edit/${Category.id}`} passHref>
-                <Button variant="info" style={{ background: '#ffffff', borderColor: '#ffffff', color: '#1a1a1a', width: '100%' }}>
-                  {' '}
-                  Edit{' '}
+                <Button
+                  variant="info"
+                  style={{
+                    background: '#ffffff',
+                    borderColor: '#ffffff',
+                    color: '#1a1a1a',
+                    width: '12rem',
+                    margin: '4px',
+                  }}
+                >
+                  Edit
                 </Button>
               </Link>
 
-              <Button variant="danger" onClick={() => deleteSavedCategory(Category)}>
-                {' '}
-                Delete{' '}
+              <Button variant="danger" style={{ width: '12rem', margin: '4px' }} onClick={() => deleteSavedCategory(Category)}>
+                Delete
               </Button>
             </Card>
           ))}

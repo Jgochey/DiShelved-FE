@@ -76,7 +76,7 @@ export default function SearchPage({ params }) {
         }
 
         const results = await searchItems(userObj.id, query);
-        console.log('searchItems results:', results); // <-- Add this line
+        console.log('searchItems results:', results); // <-- Remove this console.log later
 
         let items = Array.isArray(results) ? results : [];
         // If items are just IDs, fetch full data for each
@@ -106,36 +106,70 @@ export default function SearchPage({ params }) {
           const container = containers.find((c) => c.id === item.containerId);
 
           return (
-            <Card className="savedItemcard" key={item.id || idx} style={{ background: '#305bab', marginBottom: '1rem' }}>
-              <h1 style={{ color: '#ffffff' }}>{item.name}</h1>
-              <h4 style={{ color: '#ffffff' }}>{item.description}</h4>
-              <h4 style={{ color: '#ffffff' }}>Quantity: {item.quantity}</h4>
-              <h4 style={{ color: '#ffffff' }}>{item.complete ? '✔️ This item is complete' : '❌ This item is missing pieces'}</h4>
-              <h4 style={{ color: '#ffffff' }}>
-                Container:{' '}
-                {container ? (
-                  <Link href={`/Items/${user.uid}/${container.id}`} style={{ color: '#ffd700', textDecoration: 'underline', cursor: 'pointer' }}>
-                    {container.name}
-                  </Link>
-                ) : (
-                  'Unknown'
-                )}
-              </h4>
-              <div className="d-flex justify-content-between">
-                <img src={item.image} alt={item.name} style={{ width: '100px', height: '100px' }} />
-                <div>
-                  <h4 style={{ color: '#ffffff' }}>Categories:</h4>
-                  <div>
-                    {itemCategories.length > 0 ? (
-                      itemCategories.map((category) => (
-                        <span key={category.id} style={{ color: '#ffffff', marginRight: '10px' }}>
-                          {category.name}
-                        </span>
-                      ))
-                    ) : (
-                      <span style={{ color: '#ffffff' }}>No categories assigned</span>
-                    )}
-                  </div>
+            <Card
+              className="savedItemcard"
+              key={item.id || idx}
+              style={{
+                background: '#305bab',
+                margin: '1rem auto',
+                padding: '1rem',
+                color: '#ffffff',
+                width: '55%',
+                maxWidth: '55%',
+                border: '2px solid black',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              {item.image && (
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  style={{
+                    maxWidth: '50%',
+                    maxHeight: '12rem',
+                    width: '25%',
+                    height: 'auto',
+                    display: 'block',
+                    margin: '0.5rem auto',
+                    objectFit: 'contain',
+                  }}
+                />
+              )}
+              <div style={{ flex: 1, textAlign: 'center' }}>
+                <h1 style={{ color: '#ffffff' }}>{item.name}</h1>
+                <h4 style={{ color: '#ffffff' }}>{item.description}</h4>
+                <h4 style={{ color: '#ffffff' }}>Quantity: {item.quantity}</h4>
+                <h4 style={{ color: '#ffffff' }}>{item.complete ? '✔️ This item is complete' : '❌ This item is missing pieces'}</h4>
+                <h4 style={{ color: '#ffffff' }}>
+                  Container:{' '}
+                  {container ? (
+                    <Link
+                      href={`/Items/${user.uid}/${container.id}`}
+                      style={{
+                        color: '#ffd700',
+                        textDecoration: 'underline',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {container.name}
+                    </Link>
+                  ) : (
+                    'Unknown'
+                  )}
+                </h4>
+                <div style={{ textAlign: 'center', color: '#ffffff', marginBottom: '0.5rem' }}>
+                  <h4 style={{ color: '#ffffff', marginBottom: '0.25rem' }}>Categories:</h4>
+                  {itemCategories.length > 0 ? (
+                    itemCategories.map((category) => (
+                      <span key={category.id} style={{ color: '#ffffff', marginRight: '10px' }}>
+                        {category.name}
+                      </span>
+                    ))
+                  ) : (
+                    <span style={{ color: '#ffffff' }}>No categories assigned</span>
+                  )}
                 </div>
               </div>
             </Card>

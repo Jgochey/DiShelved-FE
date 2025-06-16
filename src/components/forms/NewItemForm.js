@@ -107,8 +107,7 @@ function NewItemForm({ containerId = null, Item = null }) {
 
       {/* IS COMPLETE TOGGLE  */}
       <h4 style={{ color: '#ffffff' }}>Is this item complete? (Not missing any pieces.)</h4>
-      <h4 style={{ color: '#ffffff' }}> {formInput.complete ? 'Complete' : 'Incomplete'} </h4>
-      <FloatingLabel controlId="floatingInput5" label="Is Complete" className="mb-3">
+      <FloatingLabel controlId="floatingInput5" label="" className="mb-3">
         <Form.Check type="checkbox" id="completeSwitch" label={formInput.complete ? 'Complete' : 'Incomplete'} name="complete" checked={!!formInput.complete} onChange={handleChange} />
       </FloatingLabel>
 
@@ -118,7 +117,7 @@ function NewItemForm({ containerId = null, Item = null }) {
       </FloatingLabel>
 
       {/* SUBMIT BUTTON  */}
-      <Button type="submit" style={{ background: '#bc6c25', borderColor: '#bc6c25' }}>
+      <Button type="submit" variant="success" className="mt-3">
         {Item ? 'Update' : 'Save'} Item
       </Button>
     </Form>

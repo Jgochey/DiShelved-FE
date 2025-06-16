@@ -1,11 +1,14 @@
 'use client';
 
+/* eslint-disable @next/next/no-img-element */
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/utils/context/authContext';
 import { Button, Card } from 'react-bootstrap';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { deleteContainer, getContainersByLocationId } from '@/api/ContainerData';
+import { getLocationById } from '../../../../api/LocationData';
 
 function ContainersPage() {
   const { user } = useAuth();
@@ -13,6 +16,8 @@ function ContainersPage() {
   const router = useRouter(); // <-- For navigation
   const { locationId } = params; // <-- Destructure params
   const [Containers, setContainers] = useState([]);
+  const [locationName, setLocationName] = useState('');
+  const [locationDescription, setLocationDescription] = useState('');
 
   const setUserContainers = () => {
     if (user && user.uid && locationId) {
@@ -26,8 +31,18 @@ function ContainersPage() {
     }
   };
 
+  const setLocationNameFromId = () => {
+    if (locationId) {
+      getLocationById(locationId).then((location) => {
+        setLocationName(location?.name || '');
+        setLocationDescription(location?.description || '');
+      });
+    }
+  };
+
   useEffect(() => {
     setUserContainers();
+    setLocationNameFromId();
   }, [user, locationId]);
 
   const deleteSavedContainer = (Container) => {
@@ -42,46 +57,79 @@ function ContainersPage() {
 
   return (
     <>
+      <Card className="text-center justify-content-center align-items-center" style={{ background: '#305bab', marginBottom: '1rem', maxWidth: '50%', border: '2px solid black', justifyContent: 'center', alignItems: 'center', margin: '0 auto', marginTop: '1rem' }}>
+        <h1 className="text-center" style={{ color: '#ffffff', marginTop: '1rem' }}>
+          {locationName ? `${locationName}` : 'Loading location...'}
+        </h1>
+        <h4 className="text-center" style={{ color: '#ffffff', marginBottom: '1rem' }}>
+          {locationDescription ? `${locationDescription}` : 'Loading description...'}
+        </h4>
+      </Card>
       <div className="text-center d-flex flex-column justify-content-center align-content-center newForecastOptions">
         <Link href={`/NewContainer/${locationId}/new`} passHref>
-          <Button variant="danger" type="button" size="lg" className="copy-btn" style={{ background: '#ffffff', borderColor: '#ffffff', color: '#1a1a1a' }}>
+          <Button
+            variant="danger"
+            type="button"
+            size="lg"
+            className="copy-btn"
+            style={{
+              background: '#ffffff',
+              borderColor: '#ffffff',
+              color: '#1a1a1a',
+              marginTop: '1rem',
+            }}
+          >
             Add New Container
           </Button>
         </Link>
       </div>
 
-      {/* This should only be displayed if the user has saved containers. If not, only show the "Add New Container" button. */}
-      {Containers.length > 0 && (
-        <div className="savedContainersContainer">
-          {Object.values(Containers).map((Container) => (
-            <Card className="savedContainercard" key={Container.id} style={{ background: '#305bab' }}>
-              <h1 style={{ color: '#ffffff' }}>{Container.name}</h1>
-              <h4 style={{ color: '#ffffff' }}> {Container.description} </h4>
-              <div className="d-flex justify-content-between">
-                {' '}
-                <img src={Container.image} alt={Container.name} style={{ width: '100px', height: '100px' }} />{' '}
-              </div>
+      <div className="savedLocationsContainer">
+        {Object.values(Containers).map((container) => (
+          <Card className="savedlocationcard" key={container.id} style={{ background: '#305bab' }}>
+            <h1 style={{ color: '#ffffff' }}>{container.name}</h1>
+            <h5 style={{ color: '#ffffff' }}>{container.description}</h5>
+            <img
+              src={container.image}
+              alt={container.name}
+              style={{
+                maxWidth: '90%',
+                maxHeight: '175px',
+                width: 'auto',
+                height: 'auto',
+                display: 'block',
+                margin: '0.5rem auto',
+                objectFit: 'contain',
+              }}
+            />
 
-              <Link href={`/NewContainer/${locationId}/edit/${user.uid}/${Container.id}`} passHref>
-                <Button variant="info" style={{ background: '#ffffff', borderColor: '#ffffff', color: '#1a1a1a', width: '100%' }}>
-                  {' '}
-                  Edit{' '}
-                </Button>
-              </Link>
-
-              <Button variant="danger" onClick={() => deleteSavedContainer(Container)}>
-                {' '}
-                Delete{' '}
+            <Link href={`/Items/${user.uid}/${container.id}`} passHref>
+              <Button variant="success" style={{ width: '12rem', margin: '4px' }}>
+                View/Add Items
               </Button>
+            </Link>
 
-              {/* Note the link here for later */}
-              <Link href={`/Items/${user.uid}/${Container.id}`} passHref>
-                <Button variant="success"> View/Add Items </Button>
-              </Link>
-            </Card>
-          ))}
-        </div>
-      )}
+            <Link href={`/NewContainer/${locationId}/edit/${user.uid}/${container.id}`} passHref>
+              <Button
+                variant="info"
+                style={{
+                  background: '#ffffff',
+                  borderColor: '#ffffff',
+                  color: '#1a1a1a',
+                  width: '12rem',
+                  margin: '4px',
+                }}
+              >
+                Edit
+              </Button>
+            </Link>
+
+            <Button variant="danger" style={{ width: '12rem', margin: '4px' }} onClick={() => deleteSavedContainer(container)}>
+              Delete
+            </Button>
+          </Card>
+        ))}
+      </div>
     </>
   );
 }

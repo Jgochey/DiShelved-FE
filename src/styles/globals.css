@@ -1,16 +1,176 @@
 body {
-  background: black;
+  background: linear-gradient(to bottom, rgb(101, 183, 213), silver);
+  background-attachment: fixed;
   color: white;
 }
 
+.navbar {
+    color-scheme: dark;
+    background-color: #305bab; /* For browsers that do not support gradients */
+    background-image: linear-gradient(#456bb2, #305bab);
+    border: 5px bold black;
+}
+
 .savedlocationcard {
+  flex: 1 1 40%;
+  min-width: 300px;
+  max-width: 45%;
+  box-sizing: border-box;
+  margin: 0.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 25vh;
-  width: 70%;
-  left: 12.5%;
   border: 2px solid black;
-  margin: 4px;
+  padding: 1.5rem;
+}
+
+.savedLocationsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 1rem;
+  gap: 1rem; /* space between cards */
+}
+
+/* Responsive: stack on small screens */
+@media (max-width: 700px) {
+  .savedlocationcard {
+    max-width: 100%;
+    min-width: 100%;
+    flex-basis: 100%;
+  }
+}
+
+.savedItemsItem {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px; /* Match locations for consistency */
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 1rem;
+  gap: 1rem; /* space between cards */
+}
+
+.savedItemcard {
+  flex: 1 1 40%;
+  min-width: 300px;
+  max-width: 45%;
+  box-sizing: border-box;
+  margin: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid black;
+  padding: 1.5rem;
+}
+
+/* Responsive: stack on small screens */
+@media (max-width: 700px) {
+  .savedItemcard {
+    max-width: 100%;
+    min-width: 100%;
+    flex-basis: 100%;
+  }
+}
+
+.savedCategoriesCategory {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 1rem;
+  gap: 1rem; /* space between cards */
+}
+
+
+.searchedItemCard {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+  flex: 1 1 60%;
+  min-width: 400px;
+  max-width: 600px;
+  min-height: 180px;
+  max-height: 220px;
+  margin: 0.5rem;
+  border: 2px solid black;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: rgba(48, 91, 171, 0.15);
+}
+
+/* Add this to your CSS file */
+.ds-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  /* padding: 0 40px; */
+  /* box-sizing: border-box;
+  z-index: 1000; */
+}
+
+.ds-main-sections {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.ds-card {
+  width: 100%;
+  max-width: 700px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  border-radius: 16px;
+  border: 2px solid #305bab;
+  background: #f8f9fa;
+  color: #222;
+}
+
+.ds-how-to-use-card {
+  background: #f8f9fa;
+  color: #222;
+}
+
+.ds-get-started-card {
+  background: #305bab;
+  color: #fff;
+  border: 2px solid #305bab;
+  max-width: 290px;
+  max-height: 270px;
+}
+
+@media (max-width: 900px) {
+  .ds-main-sections {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem 0;
+  }
+  .ds-card {
+    max-width: 95vw;
+    min-width: 0;
+  }
 }
