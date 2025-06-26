@@ -15,6 +15,9 @@ const signIn = async () => {
 
 const signOut = () => {
   firebase.auth().signOut();
+  localStorage.clear();
+  sessionStorage.clear();
+  window.location.href = '/';
 };
 
 export { signIn, signOut };

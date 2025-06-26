@@ -12,9 +12,9 @@ import { getLocationById } from '../../../../api/LocationData';
 
 function ContainersPage() {
   const { user } = useAuth();
-  const params = useParams(); // <-- Get params from the URL
-  const router = useRouter(); // <-- For navigation
-  const { locationId } = params; // <-- Destructure params
+  const params = useParams();
+  const router = useRouter();
+  const { locationId } = params;
   const [Containers, setContainers] = useState([]);
   const [locationName, setLocationName] = useState('');
   const [locationDescription, setLocationDescription] = useState('');
@@ -41,6 +41,11 @@ function ContainersPage() {
   };
 
   useEffect(() => {
+    if (user.uid !== params.userId) {
+      // Redirect to the main page if user ID does not match
+      router.replace('/');
+      return;
+    }
     setUserContainers();
     setLocationNameFromId();
   }, [user, locationId]);

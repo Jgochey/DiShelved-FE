@@ -23,6 +23,6 @@ export default function EditItemPage({ params }) {
 EditItemPage.propTypes = {
   params: PropTypes.shape({
     userId: PropTypes.string.isRequired,
-    itemId: PropTypes.string.isRequired, // <-- lowercase
+    itemId: PropTypes.string.isRequired,
   }).isRequired,
 };

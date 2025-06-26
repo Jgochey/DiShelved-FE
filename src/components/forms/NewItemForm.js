@@ -30,7 +30,7 @@ function NewItemForm({ containerId = null, Item = null }) {
         name: Item.name || '',
         description: Item.description || '',
         quantity: Item.quantity || 0,
-        complete: !!Item.complete, // force boolean
+        complete: !!Item.complete,
         image: Item.image || '',
         containerId: Item.containerId ?? null,
         userId: Item.userId || null,
@@ -67,7 +67,7 @@ function NewItemForm({ containerId = null, Item = null }) {
       }
 
       // Use the resolved containerId for routing
-      router.push(`/Items/${user.uid}/${formInput.containerId}`); // <-- use formInput.containerId
+      router.push(`/Items/${user.uid}/${formInput.containerId}`);
     } catch (error) {
       console.error('Error saving Item:', error);
     }

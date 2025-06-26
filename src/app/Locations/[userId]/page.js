@@ -4,14 +4,16 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/utils/context/authContext';
 import { Button, Card } from 'react-bootstrap';
 import Link from 'next/link';
+import { useParams, useRouter } from 'next/navigation';
 import { deleteLocation, getLocationsByUserUid } from '../../../api/LocationData';
 
 function LocationsPage() {
   const { user } = useAuth();
   const [locations, setLocations] = useState([]);
+  const params = useParams();
+  const router = useRouter();
 
   const setUserLocations = () => {
-    // Use user.uid, not user.id, if that's what your auth provides
     if (user && user.uid) {
       getLocationsByUserUid(user.uid)
         // If the data is empty, redirect to the New Location form
@@ -27,6 +29,11 @@ function LocationsPage() {
   };
 
   useEffect(() => {
+    if (user.uid !== params.userId) {
+      // Redirect to the main page if user ID does not match
+      router.replace('/');
+      return;
+    }
     setUserLocations();
   }, [user]);
 

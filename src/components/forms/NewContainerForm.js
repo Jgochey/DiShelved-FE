@@ -60,7 +60,7 @@ function NewContainerForm({ locationId = null, Container = null }) {
       }
 
       // Use the resolved locationId for routing
-      router.push(`/Containers/${user.uid}/${formInput.locationId}`); // <-- use formInput.locationId
+      router.push(`/Containers/${user.uid}/${formInput.locationId}`);
     } catch (error) {
       console.error('Error saving Container:', error);
     }

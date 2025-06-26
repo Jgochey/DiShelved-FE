@@ -35,6 +35,11 @@ const getContainerById = (containerId) =>
 
 const getContainersByUserId = (userId) =>
   new Promise((resolve, reject) => {
+    const user = firebase.auth().currentUser;
+    if (!user || user.uid !== userId) {
+      reject(new Error('Unauthorized access: User ID does not match.'));
+      return;
+    }
     (async () => {
       try {
         const token = await getToken();
@@ -67,6 +72,11 @@ const getContainersByLocationId = (locationId) =>
   new Promise((resolve, reject) => {
     (async () => {
       try {
+        const user = firebase.auth().currentUser;
+        if (!user) {
+          reject(new Error('Unauthorized access: User not authenticated.'));
+          return;
+        }
         const token = await getToken();
         const response = await fetch(`${endpoint}/Containers/Location/${locationId}`, {
           method: 'GET',
@@ -95,7 +105,6 @@ const getContainersByLocationId = (locationId) =>
 
 const updateContainer = (containerId, containerData) =>
   new Promise((resolve, reject) => {
-    console.log('Updating container:', containerId, containerData); // Add this line for testing
     (async () => {
       try {
         const token = await getToken();

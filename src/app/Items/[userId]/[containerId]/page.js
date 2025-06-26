@@ -15,22 +15,27 @@ import { getContainerById } from '../../../../api/ContainerData';
 
 function ItemsPage() {
   const { user } = useAuth();
-  const params = useParams(); // <-- Get params from the URL
-  const router = useRouter(); // <-- For navigation
-  const { containerId } = params; // <-- Destructure params
+  const params = useParams();
+  const router = useRouter();
+  const { containerId } = params;
   const [Items, setItems] = useState([]);
   const [Categories, setCategories] = useState([]);
   const [ItemCategories, setItemCategories] = useState([]);
   const [container, setContainer] = useState({});
 
   const setUserItems = () => {
+    if (user.uid !== params.userId) {
+      // Redirect to the main page if user ID does not match
+      router.replace('/');
+      return;
+    }
     if (user && user.uid && containerId) {
       getItemsByContainerId(containerId).then((data) => {
         if (!data || Object.keys(data).length === 0) {
           router.replace(`/NewItem/${containerId}/new`);
           return;
         }
-        // Always set as array
+
         setItems(Array.isArray(data) ? data : Object.values(data));
       });
     }
@@ -40,10 +45,10 @@ function ItemsPage() {
     if (user && user.uid && containerId) {
       getCatergoriesByUserUid(user.uid).then((data) => {
         if (!data || Object.keys(data).length === 0) {
-          console.warn('No categories found for this user. Please add categories first.');
+          console.error('No categories found for this user. Please add categories first.');
           return;
         }
-        // Always set as array
+
         setCategories(Array.isArray(data) ? data : Object.values(data));
       });
     }
@@ -57,6 +62,17 @@ function ItemsPage() {
   };
 
   useEffect(() => {
+    if (user.uid !== params.userId) {
+      // Redirect to the main page if user ID does not match
+      router.replace('/');
+      return;
+    }
+    if (containerId) {
+      getContainerById(containerId).then(setContainer);
+    }
+  }, [containerId]);
+
+  useEffect(() => {
     setUserItems();
     setUserCategories();
   }, [user, containerId]);
@@ -64,12 +80,6 @@ function ItemsPage() {
   useEffect(() => {
     setUserItemCategories();
   }, [Items]);
-
-  useEffect(() => {
-    if (containerId) {
-      getContainerById(containerId).then(setContainer);
-    }
-  }, [containerId]);
 
   const deleteSavedItem = async (Item) => {
     if (window.confirm(`Delete ${Item.name}?`)) {
@@ -194,14 +204,6 @@ function ItemsPage() {
                     {' '}
                     Delete Item{' '}
                   </Button>
-
-                  {/* Note the link here for later */}
-                  {/* <Link href={`/Categories/${user.uid}/${Item.id}`} passHref>
-                        <Button variant='primary'>
-                          {' '}
-                          View/Add Categories{' '}
-                        </Button>
-                      </Link> */}
                 </Card>
               );
             })}

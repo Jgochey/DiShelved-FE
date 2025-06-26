@@ -4,15 +4,14 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/utils/context/authContext';
 import { Button, Card } from 'react-bootstrap';
 import Link from 'next/link';
-// import { useParams, useRouter } from 'next/navigation';
 import PropTypes from 'prop-types';
+import { useParams, useRouter } from 'next/navigation';
 import { deleteCategory, getCatergoriesByUserUid } from '../../../api/CategoryData';
 
 function CategoriesPage() {
   const { user } = useAuth();
-  // const params = useParams(); // <-- Get params from the URL
-  // const router = useRouter(); // <-- For navigation
-  // const { containerId } = params; // <-- Destructure params
+  const params = useParams();
+  const router = useRouter();
   const [Categories, setCategories] = useState([]);
 
   const setUserCategories = () => {
@@ -29,6 +28,11 @@ function CategoriesPage() {
   };
 
   useEffect(() => {
+    if (user.uid !== params.userId) {
+      // Redirect to the main page if user ID does not match
+      router.replace('/');
+      return;
+    }
     setUserCategories();
   }, [user]);
 

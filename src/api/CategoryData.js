@@ -110,7 +110,6 @@ const deleteCategory = (categoryId) =>
           },
         });
         if (!response.ok) {
-          // Try to parse the error message from the response
           const errorData = await response.json().catch(() => ({}));
           reject(new Error(errorData.message || 'Failed to delete category'));
           return;

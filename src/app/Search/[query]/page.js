@@ -11,7 +11,7 @@ import { getCatergoriesByUserUid } from '../../../api/CategoryData';
 import { getContainersByUserId } from '../../../api/ContainerData';
 
 export default function SearchPage({ params }) {
-  const { query } = params; // Extract the query from the URL parameters
+  const { query } = params;
   const [searchResults, setSearchResults] = useState([]);
   const { user } = useAuth();
   const [containers, setContainers] = useState([]);
@@ -23,7 +23,7 @@ export default function SearchPage({ params }) {
 
         const data = await getItemsByUserId(userObj.id);
         if (!data || Object.keys(data).length === 0) {
-          console.warn('No items found for this user. Please add items first.');
+          console.error('No items found for this user. Please add items first.');
         }
       } catch (error) {
         console.error('Error fetching user items:', error);
@@ -35,7 +35,7 @@ export default function SearchPage({ params }) {
     if (user && user.uid) {
       getCatergoriesByUserUid(user.uid).then((data) => {
         if (!data || Object.keys(data).length === 0) {
-          console.warn('No categories found for this user. Please add categories first.');
+          console.error('No categories found for this user. Please add categories first.');
         }
       });
     }
@@ -63,7 +63,7 @@ export default function SearchPage({ params }) {
   useEffect(() => {
     setUserItems();
     setUserCategories();
-    setUserContainers(); // Add this
+    setUserContainers();
   }, [user]);
 
   const getSearchResults = async () => {
@@ -76,10 +76,8 @@ export default function SearchPage({ params }) {
         }
 
         const results = await searchItems(userObj.id, query);
-        console.log('searchItems results:', results); // <-- Remove this console.log later
 
         let items = Array.isArray(results) ? results : [];
-        // If items are just IDs, fetch full data for each
         if (items.length && typeof items[0] === 'string') {
           items = await Promise.all(items.map((id) => getItemsByUserId(userObj.id).then((all) => all.find((i) => i.id === id))));
         }

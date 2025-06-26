@@ -15,6 +15,11 @@ const getToken = async () => {
 
 const getLocationsByUserUid = (Uid) =>
   new Promise((resolve, reject) => {
+    const user = firebase.auth().currentUser;
+    if (!user || user.uid !== Uid) {
+      reject(new Error('Unauthorized access: User UID does not match.'));
+      return;
+    }
     (async () => {
       try {
         const token = await getToken();
