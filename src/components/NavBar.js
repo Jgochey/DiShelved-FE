@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 import { signOut } from '../utils/auth';
 import { useAuth } from '../utils/context/authContext';
+import SearchBar from './SearchBar';
 
 export default function NavBar() {
   const { user } = useAuth();
@@ -13,7 +14,7 @@ export default function NavBar() {
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container>
         <Link passHref href="/" className="navbar-brand">
-          CHANGE ME
+          DiShelved
         </Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
@@ -25,7 +26,12 @@ export default function NavBar() {
             <Link className="nav-link" href={`/Locations/${userId}`}>
               Saved Locations
             </Link>
+            <Link className="nav-link" href={`/Categories/${userId}`}>
+              Manage Categories
+            </Link>
           </Nav>
+
+          <SearchBar />
 
           <Button variant="danger" onClick={signOut}>
             Sign Out

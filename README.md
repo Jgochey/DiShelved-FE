@@ -1,61 +1,118 @@
-# NextJS with Firebase Auth App Router Template
+# **DiShelved 💻**
+<p align="center">
+  <a href="#-features">Features</a> •
+  <a href="#-user-description">User Description</a> •
+  <a href="#-technologies">Technologies</a> •
+  <a href="#-getting-started">Getting Started</a> •
+  <a href="#-api-endpoints">API Endpoints</a> •
+  <a href="#-documentation">Documentation</a> •
+  <a href="#-contributors">Contributors</a>
+</p>
 
-[See Live Demo of this Template](https://drt-next-js-template-app-router.netlify.app/)
+<p align="center">
+DiShelved is a management app for Item Collections. Whether it's Board Games, Miniatures or Holiday Decorations - DiShelved makes it simple for Users to manage where their Items are stored.
+</p>
 
-## Topics
-- [Get Started](#get-started)
-- [Starting the Project](#starting-the-project)
-- [Deploying on Netlify](#deploying-on-netlify)
-___
-## Getting Started
-### Use Template
-#### 1. To get started, click the GREEN "Use this Template" button at the top of the repo
-<img width="915" alt="Screen Shot 2022-07-06 at 12 54 01 PM" src="https://user-images.githubusercontent.com/29741570/177612998-4aac9237-5a1e-4f13-8ae0-468587521564.png">
+## ✨ Features
+- Sign-in to save your own collection data
+- List new Locations to display where your items are being kept
+- Place new Containers in each Location to hold items in
+- Add Items to your Containers! Provide Names, Descriptions and Images for each item to keep track of them
+- You may also indicate the quantity of an Item(s) and whether or not it is missing any pieces
 
-#### 2. Make sure YOUR github account is selected in the dropdown and name your project
-<img width="763" alt="Screen Shot 2022-07-06 at 12 54 48 PM" src="https://user-images.githubusercontent.com/29741570/177613126-dd38f678-7553-4f27-8a4a-75680f14d71e.png">
+## 😊 User Description
+DiShelved is designed with Item Collectors in mind. A key user would be someone with a large collection of Items such as games or collectables that needs managing.
+This is why the Items will indicate whether they are complete or if there are more than one in the collection.
+Though the app is built with Collectables in mind, it could also be used by anyone looking to keep track of their belongings, such as furniture, books and more.
 
-#### 3. Clone your new repo to your local machine
-#### 4. Go to the **NEXT** section
 
-## Starting the Project
-1. Create a Firebase project and set up authentication. Use [these videos](https://vimeo.com/showcase/codetracker-firebase) as a refresher if needed.
-1. Create a `.env` file at the root of the project
-1. Copy/Paste the contents of the `.env.sample` file to your newly created `.env` file.
-1. Copy over all of your Firebase values into the `.env` file.
-1. Open the `package.json` file and change the `name` property to the name of your application, and `author` to  your name.
-1. From your command line, be in the root directory and run `npm install` OR `npm i` for short.
-1. Next, run `npm run prepare`. This command sets up husky to track eslint errors on commit that will make your deploy fail on Netlify.
-1. Run `npx eslint . --ext .js,.jsx`
-1. To start your application, run `npm run dev`. THIS IS THE COMMAND YOU WILL USE TO RUN YOUR DEVELOPMENT SERVER FROM NOW ON.
-1. Open [http://localhost:3000](http://localhost:3000) with your browser.
+## 💻 Technologies
 
-### If you see this, you are set to go!
-<img width="450" alt="Screen Shot 2022-07-06 at 1 07 27 PM" src="https://github.com/user-attachments/assets/deae25f0-01d5-44b4-be60-7297b0f6f0ef">
+- C#
+- .NET
+- Entity Framework Core
+- Moq
+- xUnit
+- PostgreSQL
+- pgAdmin
+- Swagger
+- Postman
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## 🚀 Getting Started
 
-**NOTES:** 
-- If you see the following error, you did not follow all the setup steps correctly and failed to add your Firebase creds. Go back and do that NOW.
+Follow the steps below:
 
-<img width="1043" alt="Screen Shot 2022-07-06 at 11 18 45 AM" src="https://user-images.githubusercontent.com/29741570/177612501-c2628f18-4bbd-4de9-aae6-27ffba1172d6.png">
+1. Clone the DiShelved repository using `git clone` to copy it to your local machine.
+2. Open the project and install the required packages with the following commands:
 
-### Deploying on Netlify
-Netlify will automatically detect your project and prepopulate the settings, but should something go wrong and it does not, here are the commands:
+   ```bash
+   dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL --version 8.0
+   dotnet add package Microsoft.EntityFrameworkCore.Design --version 8.0
+   dotnet user-secrets init
+   dotnet user-secrets set "DiShelvedDbConnectionString" "Host=localhost;Port=5432;Username=postgres;Password=;Database=DiShelved"
 
-- Build Command: `npm run build`
-- Publish directory: `.next`
+3. Run the following to apply migrations and populate your database:
 
-#### Additional Steps to Take on Netlify
-- Add Environmental Variables
-    - Any Enviromental variables you are using in your `.env` file should be added to Netlify. 
-        - Go to Site settings > Build & deploy > Environment > Environment variables and the keys and values there if you did not add them when you were deploying your site
+   ```bash
+   dotnet ef database update
 
-- Update Firebase URL Settings
-    - In Firebase under Authentication select sign in methods, scroll to Authorized domains. Add your Netlify URL.
-        
-## Learn More about Next.js
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📍 API Endpoints
+
+Here are the main routes of the API:
+
+### 🗂️ Categories
+
+- `GET /Categories/:id`
+- `DELETE /Categories/:id`
+- `POST /Categories`
+- `GET /Categories/User/:userid`
+- `PUT /Categories/:id`
+
+### 📦 Containers
+
+- `GET /Containers/:id`
+- `DELETE /Containers/:id`
+- `POST /Containers`
+- `GET /Containers/User/:id`
+- `PUT /Containers/:id`
+
+### 🧾 Items
+
+- `GET /Items/:id`
+- `DELETE /Items/:id`
+- `POST /Items`
+- `GET /Items/User/:id`
+- `PUT /Items/:id`
+
+### 🔗 ItemCategories
+
+- `DELETE /ItemCategory/:itemId/:categoryId`
+- `POST /ItemCategory/:itemId/:categoryId`
+
+### 📍 Locations
+
+- `GET /Locations/:id`
+- `DELETE /Locations/:id`
+- `POST /Locations`
+- `GET /Locations/User/:id`
+- `PUT /Locations/:id`
+
+### 🗣️ Users
+
+- `POST /Users`
+
+---
+
+## 📄 Documentation
+
+- [View the DiShelved Postman Documentation to learn more about the Endpoints above.](https://documenter.getpostman.com/view/36639418/2sB2qfAzEy?authuser=0)
+- [See a 1-minute overview of the API Endpoints on Postman.](https://www.loom.com/share/79097f102a1649b9bdb03ba98acacd0d?sid=e7871ba8-5b4d-4055-aba6-9aef7b6e0ec7)
+- [See the ERD on dbdiagram to understand the relationships between entities.](https://dbdiagram.io/d/DiShelved-68227fd95b2fc4582f4a2b7a)
+- [View the DiShelved Project board for progress on the latest updates.](https://github.com/users/Jgochey/projects/12)
+
+---
+
+## 👨‍🔬 Contributors
+[Josh Gochey](https://github.com/Jgochey)
