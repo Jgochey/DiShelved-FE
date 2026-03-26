@@ -1,7 +1,2 @@
-[build.environment]
-  NEXT_PUBLIC_FIREBASE_API_KEY = "AIzaSyCI_Y6QPbdKtZvaQJb2GAgkxS27yawzo7Y"
-  NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN = "dishelved.firebaseapp.com"
-  NEXT_PUBLIC_FIREBASE_DATABASE_URL = "https://dsue40kei3lbj.cloudfront.net"
-  NEXT_PUBLIC_FIREBASE_PROJECT_ID = "dishelved"
-  NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET = "dishelved.firebasestorage.app"
-  NEXT_PUBLIC_FIREBASE_APP_ID = "1:521630413220:web:48f295157a3d8370495131"
+# Build environment variables are now configured in Netlify dashboard
+# Site settings → Environment variables
