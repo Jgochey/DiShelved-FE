@@ -31,9 +31,8 @@ export const generateMetadata = async ({ params }) => {
     // Add other metadata fields as needed, like keywords, open graph tags, etc.
     keywords: [`${slug}`, 'dynamic', 'page'],
     openGraph: {
-      title: `Open Graph Title for ${slug}`,
-      description: `Open Graph Description for ${slug}`,
-      url: `https://yourwebsite.com/${slug}`,
+      title: `DiShelved`,
+      description: `Storage for Miniatures, Furniture and more!`,
     },
   };
 };
