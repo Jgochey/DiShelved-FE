@@ -23,13 +23,11 @@ RootLayout.propTypes = {
 // You can manage the metadata, tab content and info about your app dynamically using this. It will work on every page in your app:
 export const generateMetadata = async ({ params }) => {
   // Destructure parameters or fetch necessary data here
+  // eslint-disable-next-line no-unused-vars
   const { slug } = params; // Example of accessing dynamic route params
 
   return {
-    title: `TEMPLATE - ${slug || 'HOME'}`, // Dynamically set the title using route parameters
-    description: `This is a dynamically generated description for ${slug}.`, // Dynamic description
-    // Add other metadata fields as needed, like keywords, open graph tags, etc.
-    keywords: [`${slug}`, 'dynamic', 'page'],
+    title: `DiShelved`, // Dynamically set the title using route parameters
     openGraph: {
       title: `DiShelved`,
       description: `Storage for Miniatures, Furniture and more!`,
